@@ -28,12 +28,19 @@ class SignatureGenerator
     FileUtils.mkdir_p(dir)
   end
 
+  def cdn_url
+    ENV["CDN_URL"]
+  end
+
   def write_person(person)
     file_name = "#{person["first_name"]}-#{person["last_name"]}.html"
     path = File.join(@output_directory, file_name)
 
     File.open(path, "w") do |file|
-      file.write(@engine.render(Object.new, { person: person }))
+      file.write(@engine.render(Object.new, {
+        person: person,
+        cdn_url: cdn_url
+      }))
     end
   end
 end
